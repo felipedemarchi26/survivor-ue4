@@ -2,6 +2,7 @@
 
 #include "Survivor.h"
 #include "MyCharacter.h"
+#include "Shoot.h"
 
 
 // Sets default values
@@ -68,6 +69,7 @@ void AMyCharacter::SetupPlayerInputComponent(class UInputComponent* InputCompone
 	InputComponent->BindAction("Run", IE_Released, this, &AMyCharacter::StopRun);
 	InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	InputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	InputComponent->BindAction("Fire", IE_Pressed, this, &AMyCharacter::Fire);
 }
 
 void AMyCharacter::MoveForward(float Val) {
@@ -103,4 +105,14 @@ void AMyCharacter::StartRun() {
 
 void AMyCharacter::StopRun() {
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+}
+
+void AMyCharacter::Fire() {
+	FActorSpawnParameters SpawnParameters;
+	UWorld* World = GetWorld();
+	if (World != nullptr) {
+		FRotator Rotation = MeshComp->GetComponentRotation();
+		World->SpawnActor<AShoot>(GetActorLocation(), Rotation,
+			SpawnParameters);
+	}
 }
