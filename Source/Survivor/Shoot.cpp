@@ -2,6 +2,8 @@
 
 #include "Survivor.h"
 #include "Shoot.h"
+#include "Enemy.h"
+#include "MyCharacter.h"
 
 
 // Sets default values
@@ -13,6 +15,11 @@ AShoot::AShoot()
 	Root = CreateDefaultSubobject<USphereComponent>
 		(TEXT("Root"));
 	Root->SetWorldScale3D(FVector(0.5f, 0.5f, 0.5f));
+	Root->bGenerateOverlapEvents = true;
+	Root->SetCollisionProfileName("OverlapAllDynamic");
+	Root->OnComponentBeginOverlap.AddDynamic(
+	this, &AShoot::OnOverlapBegin);
+
 	RootComponent = Root;
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>
@@ -51,3 +58,23 @@ void AShoot::Tick( float DeltaTime )
 
 }
 
+void AShoot::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	if (OtherActor != nullptr && 
+		OtherActor->IsA(AEnemy::StaticClass())) {
+
+		AEnemy* Enemy = Cast<AEnemy>(OtherActor);
+		if (Enemy) {
+			Enemy->SetLife(Enemy->GetLife() - 1);
+			UE_LOG(LogTemp, Warning, TEXT("Retirou vida"));
+			if (Enemy->IsDead()) {
+				Enemy->Destroy();
+				AMyCharacter* Player = Cast<AMyCharacter>
+					(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
+				Player->SetPontuacao(Player->GetPontuacao() + 10);
+				UE_LOG(LogTemp, Warning, TEXT("%d"), Player->GetPontuacao());
+			}
+			Destroy();
+		}
+
+	}
+}

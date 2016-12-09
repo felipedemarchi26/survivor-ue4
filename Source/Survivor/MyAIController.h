@@ -28,5 +28,4 @@ private:
 	UBlackboardComponent* BlackboardComp;
 	UBehaviorTreeComponent* BehaviorComp;
 	
-	
 };

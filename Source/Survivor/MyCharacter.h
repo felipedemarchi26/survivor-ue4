@@ -23,6 +23,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
+	FORCEINLINE int GetPontuacao() const { return Pontuacao; }
+	FORCEINLINE void AMyCharacter::SetPontuacao(int NewPontuacao)
+	{ Pontuacao = NewPontuacao; }
+
 private:
 
 	UPROPERTY(EditAnywhere)
@@ -36,6 +40,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* CameraBoom;
+
+	UPROPERTY(EditAnywhere)
+	int Pontuacao;
 
 	void MoveForward(float Val);
 	void MoveSide(float Val);

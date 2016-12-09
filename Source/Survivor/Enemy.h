@@ -26,9 +26,17 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UBehaviorTree* BotBehavior;
 
+	FORCEINLINE int GetLife() const { return Life; }
+	FORCEINLINE void AEnemy::SetLife(int NewLife) 
+	{ Life = NewLife; }
+
+	bool IsDead();
+
 private:
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* MeshComp;
+	UPROPERTY(EditAnywhere)
+	int Life;
 	
 };

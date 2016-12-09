@@ -12,6 +12,7 @@ AEnemy::AEnemy()
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>
 		(TEXT("MeshComp"));
+	MeshComp->SetCollisionProfileName("NoCollision");
 	MeshComp->SetupAttachment(GetCapsuleComponent());
 
 }
@@ -21,6 +22,7 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	Life = 3;
 }
 
 // Called every frame
@@ -37,3 +39,9 @@ void AEnemy::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 
 }
 
+bool AEnemy::IsDead() {
+	if (Life <= 0) {
+		return true;
+	}
+	return false;
+}
