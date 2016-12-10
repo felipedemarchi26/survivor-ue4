@@ -26,6 +26,9 @@ public:
 	FORCEINLINE int GetPontuacao() const { return Pontuacao; }
 	FORCEINLINE void AMyCharacter::SetPontuacao(int NewPontuacao)
 	{ Pontuacao = NewPontuacao; }
+	FORCEINLINE int GetLife() const { return Life; }
+	FORCEINLINE void AMyCharacter::SetLife(int NewLife)
+	{Life = NewLife;}
 
 private:
 
@@ -43,6 +46,8 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	int Pontuacao;
+	UPROPERTY(EditAnywhere)
+	int Life;
 
 	void MoveForward(float Val);
 	void MoveSide(float Val);

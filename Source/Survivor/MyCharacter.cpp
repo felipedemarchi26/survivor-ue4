@@ -20,6 +20,7 @@ AMyCharacter::AMyCharacter()
 	}
 	MeshComp->SetWorldLocation(FVector(0.0f, 0.0f, -90.0f));
 	MeshComp->SetWorldScale3D(FVector(1.25f, 1.25f, 1.85f));
+	MeshComp->SetCollisionProfileName("NoCollision");
 	MeshComp->SetupAttachment(GetCapsuleComponent());
 
 	CameraComp = CreateDefaultSubobject<UCameraComponent>
@@ -36,6 +37,7 @@ AMyCharacter::AMyCharacter()
 		(TEXT("ArrowComp"));
 	ArrowComp->SetHiddenInGame(false);
 	ArrowComp->ArrowSize = 2.0f;
+	ArrowComp->SetCollisionProfileName("NoCollision");
 	ArrowComp->SetupAttachment(MeshComp);
 
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
@@ -47,6 +49,7 @@ void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	Life = 3;
 }
 
 // Called every frame

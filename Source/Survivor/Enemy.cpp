@@ -2,6 +2,7 @@
 
 #include "Survivor.h"
 #include "Enemy.h"
+#include "MyCharacter.h"
 
 
 // Sets default values
@@ -14,6 +15,11 @@ AEnemy::AEnemy()
 		(TEXT("MeshComp"));
 	MeshComp->SetCollisionProfileName("NoCollision");
 	MeshComp->SetupAttachment(GetCapsuleComponent());
+
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(
+		this, &AEnemy::OnHit);
+
+	GetCharacterMovement()->MaxWalkSpeed = 200.0f;
 
 }
 
@@ -44,4 +50,25 @@ bool AEnemy::IsDead() {
 		return true;
 	}
 	return false;
+}
+
+void AEnemy::OnHit(UPrimitiveComponent* HitComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	FVector NormalImpulse,
+	const FHitResult& Hit) {
+
+	if (OtherActor != nullptr &&
+		OtherActor->IsA(AMyCharacter::StaticClass())) {
+
+		AMyCharacter* Player = Cast<AMyCharacter>
+			(OtherActor);
+		if (Player) {
+			Player->SetLife(Player->GetLife() - 1);
+			Player->SetPontuacao(Player->GetPontuacao() - 50);
+			Destroy();
+		}
+
+	}
+
 }
